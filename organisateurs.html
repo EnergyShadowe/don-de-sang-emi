@@ -42,7 +42,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 form{display:grid;grid-template-columns:2fr 1fr 1.4fr auto;gap:8px}
 @media (max-width:700px){form{grid-template-columns:1fr 1fr}form input[name=nom]{grid-column:1/-1}form button{grid-column:1/-1}h1{font-size:2.1rem}}
 input,select{font:inherit;padding:14px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);min-width:0}
-.fil{display:grid;grid-template-columns:170px 1fr 40px;gap:10px;align-items:center;margin:10px 0;font-size:1.08rem}
+.fil{display:grid;grid-template-columns:170px 1fr 64px;gap:10px;align-items:center;margin:10px 0;font-size:1.08rem}
 .track{background:var(--red-l);border-radius:99px;height:12px;overflow:hidden}
 .track i{display:block;height:100%;background:var(--red);border-radius:99px;transition:width .3s}
 .fil em{font-style:normal;font-weight:800;text-align:right}
@@ -135,7 +135,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-grad
 </div></div>
 <script>
 // Collez ici l’adresse du script Google (voir le README). Laissez vide pour un usage local.
-const API_URL="https://script.google.com/macros/s/AKfycbwjO9eBrrD4V7h6QDxzdhXrhluXpYKw9q_jkPDRYGSmvAsagF_lR9hiujfno0CE6EI_/exec";
+const API_URL="";
 const KEY="don-sang-emi-v1";
 const FILS=["Civil","Électrique","Industriel","Informatique","MIS","Mécanique","Minéral","Procédés Industriels"];
 const AN={1:"1ère année",2:"2ème année",3:"3ème année"};
@@ -152,7 +152,7 @@ const D=S.donors;
 $("total").textContent=D.length;
 $("years").innerHTML=[1,2,3].map(a=>'<div class="y"><b>'+D.filter(d=>d.annee==a).length+'</b><span>'+AN[a]+'</span></div>').join("");
 const cnt=FILS.map(f=>D.filter(d=>d.fil===f).length),mx=Math.max(1,...cnt);
-$("bars").innerHTML=FILS.map((f,i)=>'<div class="fil"><span>'+f+'</span><div class="track"><i style="width:'+cnt[i]/mx*100+'%"></i></div><em>'+cnt[i]+'</em></div>').join("");
+$("bars").innerHTML=FILS.map((f,i)=>'<div class="fil"><span>'+f+'</span><div class="track"><i style="width:'+(D.length?cnt[i]/D.length*100:0)+'%"></i></div><em>'+(D.length?Math.round(cnt[i]/D.length*100):0)+' %</em></div>').join("");
 let t="<thead><tr><th>Filière</th><th>1ère</th><th>2ème</th><th>3ème</th><th>Total</th></tr></thead><tbody>";
 FILS.forEach(f=>{t+="<tr><td>"+f+"</td>"+[1,2,3].map(a=>{const n=D.filter(d=>d.fil===f&&d.annee==a).length;return "<td"+(n?"":' class="z"')+">"+n+"</td>"}).join("")+"<td><b>"+D.filter(d=>d.fil===f).length+"</b></td></tr>"});
 t+="</tbody><tfoot><tr><td>Total</td>"+[1,2,3].map(a=>"<td>"+D.filter(d=>d.annee==a).length+"</td>").join("")+"<td>"+D.length+"</td></tr></tfoot>";
