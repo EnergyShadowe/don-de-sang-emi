@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Don de sang, don de vie – EMI Khayr</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&family=Playfair+Display:wght@800&family=Dancing+Script:wght@600&display=swap">
+<style>
+:root{--bg:#f7f4f4;--surface:#fff;--ink:#111;--muted:#6b6262;--line:#e6dede;--red:#cf111c;--red-d:#9d0b14;--red-l:#fdeaea;--on-red:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121010;--surface:#1c1818;--ink:#f4eded;--muted:#b3a5a5;--line:#3a2f2f;--red:#ef3b45;--red-d:#b5121c;--red-l:#2f1517;--on-red:#fff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121010;--surface:#1c1818;--ink:#f4eded;--muted:#b3a5a5;--line:#3a2f2f;--red:#ef3b45;--red-d:#b5121c;--red-l:#2f1517;--on-red:#fff;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);font-size:112.5%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.4}
+.hero{background:transparent;padding:18px 16px 14px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+.brand{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px}
+.logo{width:210px;height:210px;display:grid;place-items:center}
+.logo img{width:100%;height:100%;object-fit:contain}
+.ttl{display:flex;align-items:center;gap:14px;width:100%;max-width:560px}
+.ln{flex:1;height:3px;background:linear-gradient(90deg,transparent,#cf111c)}
+.ln:last-child{background:linear-gradient(270deg,transparent,#cf111c)}
+h1{margin:0;font-family:"Playfair Display",Georgia,"Times New Roman",serif;font-size:2.7rem;font-weight:800;color:#111;white-space:nowrap;line-height:1.1}
+.tag{font-family:"Dancing Script","Segoe Script",cursive;font-size:2.4rem;color:#cf111c;line-height:1.1}
+.sub{color:#4a4242;font-size:1rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+main.wrap{margin-top:0;padding-bottom:48px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+h2{margin:0 0 14px;font-size:1.4rem;font-weight:800;color:var(--red)}
+button{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:12px 16px}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.primary{background:var(--red);border-color:var(--red);color:var(--on-red);font-weight:600}
+.primary:hover{background:var(--red-d)}
+.total{display:flex;align-items:center;gap:16px}
+.total svg{width:70px;height:70px;flex:none}
+.big{font-size:4.4rem;font-weight:800;line-height:1;color:var(--red)}
+.lbl{color:var(--muted)}
+.years{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.y{background:var(--red-l);border-radius:10px;padding:10px;text-align:center}
+.y b{display:block;font-size:2.3rem;color:var(--red)}
+.y span{font-size:1rem;color:var(--muted)}
+form{display:grid;grid-template-columns:2fr 1fr 1.4fr auto;gap:8px}
+@media (max-width:700px){form{grid-template-columns:1fr 1fr}form input[name=nom]{grid-column:1/-1}form button{grid-column:1/-1}h1{font-size:2.1rem}}
+input,select{font:inherit;padding:14px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);min-width:0}
+.fil{display:grid;grid-template-columns:170px 1fr 40px;gap:10px;align-items:center;margin:10px 0;font-size:1.08rem}
+.track{background:var(--red-l);border-radius:99px;height:12px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--red);border-radius:99px;transition:width .3s}
+.fil em{font-style:normal;font-weight:800;text-align:right}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:460px;font-size:1.08rem}
+th,td{padding:8px;border-bottom:1px solid var(--line);text-align:center}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:600}
+tfoot td{font-weight:800;color:var(--red);border-bottom:0}
+td.z{color:var(--muted)}
+.list td:nth-child(1){text-align:left}
+.del{border:0;background:none;color:var(--muted);font-size:1.1rem;padding:2px 8px}
+.del:hover{color:var(--red)}
+.empty{color:var(--muted);text-align:center;padding:14px}
+.row2{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.danger{border-color:var(--red);color:var(--red);font-weight:600}
+.ov{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.65);display:grid;place-items:center;padding:20px}
+.ov[hidden]{display:none}
+.imp{display:block;width:100%;min-height:130px;font:inherit;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);margin-bottom:10px}
+.btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.hearts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.hf{text-align:center;margin:0}
+.hf svg{width:100%;max-width:210px;height:auto;filter:drop-shadow(0 4px 8px rgba(0,0,0,.25))}
+.hf .rect{transition:transform 1.4s cubic-bezier(.2,.8,.2,1)}
+.hf b{display:block;font-size:1.2rem}
+.hf span{color:var(--muted);font-size:.95rem}
+.goal{display:flex;align-items:center;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.goal input{width:100px}
+@media (prefers-reduced-motion:reduce){.hf .rect{transition:none}}
+.thx{background:var(--surface);color:var(--ink);border-top:8px solid var(--red);border-radius:18px;padding:26px 22px 22px;max-width:480px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.thx svg{width:92px;height:92px;animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+@media (prefers-reduced-motion:reduce){.thx svg{animation:none}}
+.thx h3{margin:6px 0 8px;font-family:"Playfair Display",Georgia,serif;font-size:2.2rem;line-height:1.1;color:var(--red)}
+.thx p{margin:0 0 10px;font-size:1.15rem}
+.thx .bonus{font-family:"Dancing Script","Segoe Script",cursive;font-size:1.7rem;color:var(--red);margin-bottom:16px}
+body{background:#120f0f}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.32)),#120f0f url(fond.jpg) center top/cover no-repeat}
+.brand{background:#fff;border-radius:16px;padding:14px 16px 12px;max-width:620px;border-bottom:4px solid #cf111c;box-shadow:0 8px 28px rgba(0,0,0,.35)}
+</style>
+</head>
+<body>
+<div class="hero"><div class="wrap brand">
+<div class="logo" id="logo"></div>
+<div class="ttl"><span class="ln"></span><h1>Don de sang</h1><span class="ln"></span></div>
+<div class="tag">Don de vie</div>
+<div class="sub">Espace organisateurs · EMI Khayr</div>
+</div></div>
+
+<main class="wrap">
+<section class="card">
+<h2>Ajouter un donneur manuellement</h2>
+<form id="f">
+<input name="nom" type="text" placeholder="Nom (facultatif)" maxlength="60" aria-label="Nom">
+<select name="annee" aria-label="Année" required><option value="">Année</option><option value="1">1ère année</option><option value="2">2ème année</option><option value="3">3ème année</option></select>
+<select name="fil" aria-label="Filière" required><option value="">Filière</option></select>
+<button class="primary" type="submit">+ Ajouter</button>
+</form>
+</section>
+
+<div class="card" style="text-align:center"><p id="msg" role="status" style="margin:0 0 8px;color:var(--red);font-weight:600;min-height:1.4em"></p><div class="btns"><button id="toggle" class="primary" type="button">Masquer les effectifs</button><button id="simBtn" class="primary" type="button">Simulation</button></div></div>
+<section class="card" id="sim" hidden><h2>Simulation : le sang remplit les cœurs</h2><div class="hearts" id="hearts"></div><div class="goal"><label for="goal">Objectif par année :</label><input type="number" id="goal" min="1" max="999" value="50"><span>donneurs</span></div></section>
+<div id="stats">
+<section class="card">
+<div class="total">
+<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 58C10 40 4 29 4 20a14 14 0 0 1 28-4 14 14 0 0 1 28 4c0 9-6 20-28 38Z" fill="var(--red)"/></svg>
+<div><div class="big" id="total">0</div><div class="lbl">donneur(s) au total</div></div>
+</div>
+<div class="years" id="years"></div>
+</section>
+
+<section class="card"><h2>Répartition par filière</h2><div id="bars"></div></section>
+
+<section class="card"><h2>Tableau filière × année</h2><div class="scroll"><table id="mx"></table></div></section>
+
+<section class="card"><h2>Importer les réponses des élèves</h2><p style="margin:0 0 10px;color:var(--muted)">Collez ici les messages reçus (WhatsApp, e-mail…). Tous les messages du formulaire sont reconnus d’un coup, les doublons sont ignorés.</p><textarea class="imp" id="imp" placeholder="Don de sang EMI Khayr&#10;Nom : …&#10;Année : 2ème année&#10;Filière : Informatique" aria-label="Messages à importer"></textarea><div class="btns" style="justify-content:flex-start;align-items:center"><button class="primary" id="impBtn" type="button">Importer</button><span id="impMsg" role="status" style="font-weight:600;color:var(--red)"></span></div></section>
+<section class="card">
+<div class="row2"><h2 style="margin:0">Liste des donneurs</h2><button id="reset" type="button">Tout effacer</button></div>
+<div class="scroll"><table class="list"><tbody id="list"></tbody></table></div>
+</section>
+</div>
+</main>
+
+<div class="ov" id="ov" hidden><div class="thx" role="dialog" aria-modal="true" aria-labelledby="thxT">
+<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 58C10 40 4 29 4 20a14 14 0 0 1 28-4 14 14 0 0 1 28 4c0 9-6 20-28 38Z" fill="var(--red)"/></svg>
+<h3 id="thxT"></h3>
+<p>Vous venez d’accomplir un acte noble et généreux : votre don de sang peut aider à sauver jusqu’à 3 vies.</p>
+<div class="bonus" id="thxB"></div>
+<button class="primary" id="thxX" type="button">Fermer</button>
+</div></div>
+<script>
+// Collez ici l’adresse du script Google (voir le README). Laissez vide pour un usage local.
+const API_URL="";
+const KEY="don-sang-emi-v1";
+const FILS=["Civil","Électrique","Industriel","Informatique","MIS","Mécanique","Minéral","Procédés Industriels"];
+const AN={1:"1ère année",2:"2ème année",3:"3ème année"};
+let S={donors:[],logo:""};
+try{const r=localStorage.getItem(KEY);if(r){const p=JSON.parse(r);if(p&&Array.isArray(p.donors))S=p}}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+$("f").fil.innerHTML+=FILS.map(x=>"<option>"+x+"</option>").join("");
+const LOGO="logo.jpg";
+function logo(){$("logo").innerHTML='<img alt="Logo EMI Khayr" src="'+LOGO+'">'}
+function render(){
+const D=S.donors;
+$("total").textContent=D.length;
+$("years").innerHTML=[1,2,3].map(a=>'<div class="y"><b>'+D.filter(d=>d.annee==a).length+'</b><span>'+AN[a]+'</span></div>').join("");
+const cnt=FILS.map(f=>D.filter(d=>d.fil===f).length),mx=Math.max(1,...cnt);
+$("bars").innerHTML=FILS.map((f,i)=>'<div class="fil"><span>'+f+'</span><div class="track"><i style="width:'+cnt[i]/mx*100+'%"></i></div><em>'+cnt[i]+'</em></div>').join("");
+let t="<thead><tr><th>Filière</th><th>1ère</th><th>2ème</th><th>3ème</th><th>Total</th></tr></thead><tbody>";
+FILS.forEach(f=>{t+="<tr><td>"+f+"</td>"+[1,2,3].map(a=>{const n=D.filter(d=>d.fil===f&&d.annee==a).length;return "<td"+(n?"":' class="z"')+">"+n+"</td>"}).join("")+"<td><b>"+D.filter(d=>d.fil===f).length+"</b></td></tr>"});
+t+="</tbody><tfoot><tr><td>Total</td>"+[1,2,3].map(a=>"<td>"+D.filter(d=>d.annee==a).length+"</td>").join("")+"<td>"+D.length+"</td></tr></tfoot>";
+$("mx").innerHTML=t;
+$("list").innerHTML=D.length?D.slice().reverse().map(d=>'<tr><td>'+(d.nom?esc(d.nom):'<span style="color:var(--muted)">Anonyme</span>')+'</td><td>'+AN[d.annee]+'</td><td>'+esc(d.fil)+'</td><td><button class="del" data-id="'+d.id+'" aria-label="Supprimer">×</button></td></tr>').join(""):'<tr><td class="empty" colspan="4">Aucun donneur enregistré pour l’instant.</td></tr>';
+}
+$("f").onsubmit=e=>{
+e.preventDefault();const f=e.target;
+S.donors.push({id:Date.now()+"",nom:f.nom.value.trim(),annee:+f.annee.value,fil:f.fil.value});
+save();f.reset();render()};
+$("list").onclick=e=>{const id=e.target.dataset.id;if(!id)return;S.donors=S.donors.filter(d=>d.id!==id);save();render()};
+let rt;$("reset").onclick=()=>{const b=$("reset");if(!S.donors.length)return;if(b.dataset.c){S.donors=[];save();render();clearTimeout(rt);b.textContent="Tout effacer";b.classList.remove("danger");delete b.dataset.c;return}b.dataset.c=1;b.textContent="Confirmer l’effacement ?";b.classList.add("danger");rt=setTimeout(()=>{b.textContent="Tout effacer";b.classList.remove("danger");delete b.dataset.c},4000)};
+const BONUS=["Un petit geste pour vous, un immense cadeau pour un malade.","Chaque don compte : vous offrez de l’espoir et de la vie.","Bravo, l’EMI Khayr est fière de vous !","Don de sang, don de vie : merci d’y croire."];
+let tt;function closeThx(){clearTimeout(tt);$("ov").hidden=true}
+function thanks(who){$("thxT").textContent=who?"Merci "+who+" !":"Merci !";$("thxB").textContent=BONUS[Math.floor(Math.random()*BONUS.length)];$("ov").hidden=false;$("thxX").focus();clearTimeout(tt);tt=setTimeout(closeThx,9000)}
+$("thxX").onclick=closeThx;$("ov").onclick=e=>{if(e.target.id==="ov")closeThx()};
+addEventListener("keydown",e=>{if(e.key==="Escape")closeThx()});
+$("toggle").onclick=()=>{const s=$("stats");s.hidden=!s.hidden;$("toggle").textContent=s.hidden?"Voir les effectifs":"Masquer les effectifs"};
+const norm=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z]/g,"");
+function parseImp(t){const re=/Nom\s*:\s*(.+?)\s*[\r\n]+\s*Ann[ée]e\s*:\s*([123])[^\r\n]*[\r\n]+\s*Fili[èe]re\s*:\s*([^\r\n]+)/gi;let m,add=0,dup=0,bad=0;
+while((m=re.exec(t))){const nom=m[1].trim().slice(0,60),an=+m[2],fk=norm(m[3]);const fil=FILS.find(x=>norm(x)===fk)||FILS.find(x=>fk&&(norm(x).startsWith(fk)||fk.startsWith(norm(x))));
+if(!fil){bad++;continue}
+if(S.donors.some(d=>(d.nom||"").toLowerCase()===nom.toLowerCase()&&d.annee===an&&d.fil===fil)){dup++;continue}
+S.donors.push({id:Date.now()+"-"+Math.random().toString(36).slice(2,7),nom:nom,annee:an,fil:fil});add++}
+return {add,dup,bad}}
+$("impBtn").onclick=()=>{const r=parseImp($("imp").value);const el=$("impMsg");
+if(!r.add&&!r.dup&&!r.bad){el.textContent="Aucune réponse reconnue dans ce texte.";return}
+save();render();if(r.add)$("imp").value="";
+el.textContent=r.add+" ajouté(s)"+(r.dup?", "+r.dup+" doublon(s) ignoré(s)":"")+(r.bad?", "+r.bad+" filière(s) non reconnue(s)":"")};
+const HP="M32 58C10 40 4 29 4 20a14 14 0 0 1 28-4 14 14 0 0 1 28 4c0 9-6 20-28 38Z";
+function simDraw(anim){
+const g=Math.max(1,+S.goal||50);$("goal").value=g;
+$("hearts").innerHTML=[1,2,3].map(a=>{const n=S.donors.filter(d=>d.annee==a).length,p=Math.min(1,n/g);
+return '<figure class="hf"><svg viewBox="0 0 64 64" role="img" aria-label="'+AN[a]+' : '+n+' sur '+g+'"><defs><clipPath id="hc'+a+'"><path d="'+HP+'"/></clipPath></defs><path d="'+HP+'" fill="var(--red-l)"/><g clip-path="url(#hc'+a+')"><rect class="rect" data-p="'+p+'" x="0" y="6" width="64" height="52" fill="var(--red)" style="transform:translateY('+(anim?52:(1-p)*52)+'px)"/></g><path d="'+HP+'" fill="none" stroke="var(--red)" stroke-width="2"/></svg><figcaption><b>'+AN[a]+'</b><span>'+n+' / '+g+' · '+Math.round(p*100)+' %'+(p>=1?' · objectif atteint ✓':'')+'</span></figcaption></figure>'}).join("");
+if(anim)requestAnimationFrame(()=>requestAnimationFrame(()=>{document.querySelectorAll("#hearts .rect").forEach(r=>{r.style.transform="translateY("+((1-r.dataset.p)*52)+"px)"})}))}
+$("simBtn").onclick=()=>{const s=$("sim");s.hidden=!s.hidden;$("simBtn").textContent=s.hidden?"Simulation":"Masquer la simulation";if(!s.hidden)simDraw(true)};
+$("goal").onchange=()=>{S.goal=Math.max(1,Math.min(999,Math.round(+$("goal").value)||50));save();simDraw(false)};
+const _r=render;render=function(){_r();if(!$("sim").hidden)simDraw(false)};
+logo();render();
+(function(){
+if(!API_URL)return;
+S.donors=[];
+let key="";try{key=sessionStorage.getItem("ak")||""}catch(e){}
+$("impBtn").closest("section").hidden=true;
+document.body.insertAdjacentHTML("beforeend",'<div class="ov" id="gate" hidden><div class="thx"><h3>Espace organisateurs</h3><p>Entrez le code organisateur pour voir les données.</p><input id="gk" type="password" autocomplete="current-password" style="width:100%;padding:14px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:inherit;margin-bottom:10px" aria-label="Code organisateur"><div id="ge" role="alert" style="color:var(--red);font-weight:600;min-height:1.3em;margin-bottom:8px"></div><button class="primary" id="gb" type="button" style="width:100%">Entrer</button></div></div>');
+const bar=$("toggle").parentNode;
+bar.insertAdjacentHTML("beforeend",'<button id="rf" type="button">Actualiser</button>');
+bar.insertAdjacentHTML("afterend",'<p id="st" role="status" style="margin:8px 0 0;color:var(--muted);font-size:.9rem"></p>');
+const st=t=>{$("st").textContent=t};
+function gate(show,msg){$("gate").hidden=!show;$("ge").textContent=msg||"";if(show)$("gk").focus()}
+async function call(action,p){
+const u=new URL(API_URL);u.searchParams.set("action",action);u.searchParams.set("key",key);
+Object.keys(p||{}).forEach(k=>u.searchParams.set(k,p[k]));
+const r=await fetch(u.toString()),j=await r.json();
+if(j.error){gate(true,"Code incorrect.");throw new Error("auth")}
+S.donors=j.donors.map(d=>({id:String(d.id),nom:String(d.nom||"").trim(),annee:+d.annee,fil:String(d.fil)}));
+render();st("Données à jour à "+new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}));return j}
+async function load(){try{await call("list")}catch(e){if(e.message!=="auth")st("Connexion impossible. Appuyez sur Actualiser.")}}
+async function enter(){key=$("gk").value.trim();if(!key)return;$("ge").textContent="Vérification…";
+try{await call("list");try{sessionStorage.setItem("ak",key)}catch(e){}gate(false)}catch(e){if(e.message!=="auth")$("ge").textContent="Connexion impossible. Réessayez."}}
+$("gb").onclick=enter;$("gk").addEventListener("keydown",e=>{if(e.key==="Enter")enter()});
+$("rf").onclick=load;
+$("f").onsubmit=async e=>{e.preventDefault();const f=e.target;if(!f.annee.value||!f.fil.value)return;
+try{await call("add",{nom:f.nom.value.trim(),annee:f.annee.value,fil:f.fil.value});f.reset()}catch(err){st("Ajout impossible.")}};
+$("list").onclick=async e=>{const id=e.target.dataset.id;if(!id)return;try{await call("delete",{id:id})}catch(err){st("Suppression impossible.")}};
+let rt2;$("reset").onclick=async()=>{const b=$("reset");if(!S.donors.length)return;
+if(b.dataset.c){clearTimeout(rt2);b.textContent="Tout effacer";b.classList.remove("danger");delete b.dataset.c;try{await call("clear")}catch(err){st("Effacement impossible.")}return}
+b.dataset.c=1;b.textContent="Confirmer l’effacement ?";b.classList.add("danger");
+rt2=setTimeout(()=>{b.textContent="Tout effacer";b.classList.remove("danger");delete b.dataset.c},4000)};
+setInterval(()=>{if(!document.hidden&&$("gate").hidden&&key)load()},30000);
+if(key)load();else gate(true,"");
+})();
+</script>
+</body>
+</html>
