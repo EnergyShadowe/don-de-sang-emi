@@ -66,6 +66,8 @@ textarea{display:block;width:100%;font:inherit;font-size:.95rem;padding:10px;bor
 <select id="an"><option value="">Choisir…</option><option value="1">1ère année</option><option value="2">2ème année</option><option value="3">3ème année</option></select>
 <label for="fil">Filière</label>
 <select id="fil"><option value="">Choisir…</option></select>
+<label for="hr">Heure de passage (de 9h à 16h)</label>
+<select id="hr"><option value="">Choisir…</option></select>
 <p id="err" role="alert"></p>
 <button class="primary" id="go" type="submit">Valider mon don</button>
 </form>
@@ -74,6 +76,7 @@ textarea{display:block;width:100%;font:inherit;font-size:.95rem;padding:10px;bor
 <div class="ov" id="ov" hidden><div class="thx" role="dialog" aria-modal="true" aria-labelledby="tt">
 <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 58C10 40 4 29 4 20a14 14 0 0 1 28-4 14 14 0 0 1 28 4c0 9-6 20-28 38Z" fill="var(--red)"/></svg>
 <h3 id="tt"></h3>
+<p id="rv" style="font-weight:800"></p>
 <p>Vous venez d’accomplir un acte noble et généreux : votre don de sang peut aider à sauver jusqu’à 3 vies.</p>
 <div class="bonus" id="bn"></div>
 <div class="step"><b>Dernière étape :</b> envoyez ce message aux organisateurs pour que votre don soit bien comptabilisé.
@@ -85,25 +88,27 @@ textarea{display:block;width:100%;font:inherit;font-size:.95rem;padding:10px;bor
 
 <script>
 // Collez ici l’adresse du script Google (voir le README). Laissez vide sinon.
-const API_URL="https://script.google.com/macros/s/AKfycbwjO9eBrrD4V7h6QDxzdhXrhluXpYKw9q_jkPDRYGSmvAsagF_lR9hiujfno0CE6EI_/exec";
+const API_URL="";
 const FILS=["Civil","Électrique","Industriel","Informatique","MIS","Mécanique","Minéral","Procédés Industriels"];
 const AN={1:"1ère année",2:"2ème année",3:"3ème année"};
+const SLOTS=(()=>{const a=[];for(let m=540;m<=960;m+=15){a.push(String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0"))}return a})();const hf=s=>s.replace(/^0/,"").replace(":","h");
 const BONUS=["Un petit geste pour vous, un immense cadeau pour un malade.","Chaque don compte : vous offrez de l’espoir et de la vie.","Bravo, l’EMI Khayr est fière de vous !","Don de sang, don de vie : merci d’y croire."];
 const $=id=>document.getElementById(id);
 $("fil").innerHTML+=FILS.map(x=>"<option>"+x+"</option>").join("");
+$("hr").innerHTML+=SLOTS.map(x=>'<option value="'+x+'">'+hf(x)+"</option>").join("");
 $("f").onsubmit=async e=>{
 e.preventDefault();
-const nom=$("nom").value.trim(),an=$("an").value,fil=$("fil").value;
-if(!nom||!an||!fil){$("err").textContent="Merci de remplir votre nom, votre année et votre filière.";return}
+const nom=$("nom").value.trim(),an=$("an").value,fil=$("fil").value,hr=$("hr").value;
+if(!nom||!an||!fil||!hr){$("err").textContent="Merci de remplir votre nom, votre année, votre filière et votre heure de passage.";return}
 $("err").textContent="";
 const btn=$("go");
 if(API_URL){
 btn.disabled=true;btn.textContent="Envoi…";
-try{await fetch(API_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({nom:nom,annee:+an,fil:fil})})}
+try{await fetch(API_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({nom:nom,annee:+an,fil:fil,heure:hr})})}
 catch(err){$("err").textContent="Envoi impossible. Vérifiez votre connexion et réessayez.";btn.disabled=false;btn.textContent="Valider mon don";return}
 btn.disabled=false;btn.textContent="Valider mon don"}
-const m="Don de sang EMI Khayr\nNom : "+nom+"\nAnnée : "+AN[an]+"\nFilière : "+fil;
-$("tt").textContent="Merci "+nom+" !";
+const m="Don de sang EMI Khayr\nNom : "+nom+"\nAnnée : "+AN[an]+"\nFilière : "+fil+"\nHeure : "+hr;
+$("tt").textContent="Merci "+nom+" !";$("rv").textContent="Votre créneau : "+hf(hr);
 $("bn").textContent=BONUS[Math.floor(Math.random()*BONUS.length)];
 $("msg").value=m;$("cpm").textContent="";
 $("wa").href="https://wa.me/?text="+encodeURIComponent(m);

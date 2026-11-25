@@ -39,7 +39,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 .y{background:var(--red-l);border-radius:10px;padding:10px;text-align:center}
 .y b{display:block;font-size:2.3rem;color:var(--red)}
 .y span{font-size:1rem;color:var(--muted)}
-form{display:grid;grid-template-columns:2fr 1fr 1.4fr auto;gap:8px}
+form{display:grid;grid-template-columns:2fr 1fr 1.4fr 1.2fr auto;gap:8px}
 @media (max-width:700px){form{grid-template-columns:1fr 1fr}form input[name=nom]{grid-column:1/-1}form button{grid-column:1/-1}h1{font-size:2.1rem}}
 input,select{font:inherit;padding:14px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);min-width:0}
 .fil{display:grid;grid-template-columns:170px 1fr 64px;gap:10px;align-items:center;margin:10px 0;font-size:1.08rem}
@@ -82,6 +82,11 @@ td.z{color:var(--muted)}
 body{background:#120f0f}
 body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.32)),#120f0f url(fond.jpg) center top/cover no-repeat}
 .brand{background:#fff;border-radius:16px;padding:14px 16px 12px;max-width:620px;border-bottom:4px solid #cf111c;box-shadow:0 8px 28px rgba(0,0,0,.35)}
+.hc{display:flex;align-items:flex-end;gap:3px;height:230px;min-width:600px}
+.hb{flex:1;min-width:0;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
+.hb i{display:block;width:100%;background:var(--red);border-radius:4px 4px 0 0}
+.hb em{font-style:normal;font-weight:800;font-size:.85rem;min-height:1.1em}
+.hb small{font-size:.78rem;color:var(--muted);margin-top:4px;min-height:1.1em;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -99,6 +104,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-grad
 <input name="nom" type="text" placeholder="Nom (facultatif)" maxlength="60" aria-label="Nom">
 <select name="annee" aria-label="Année" required><option value="">Année</option><option value="1">1ère année</option><option value="2">2ème année</option><option value="3">3ème année</option></select>
 <select name="fil" aria-label="Filière" required><option value="">Filière</option></select>
+<select name="heure" aria-label="Heure de passage"><option value="">Heure (facultatif)</option></select>
 <button class="primary" type="submit">+ Ajouter</button>
 </form>
 </section>
@@ -116,11 +122,13 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-grad
 
 <section class="card"><h2>Répartition par filière</h2><div id="bars"></div></section>
 
+<section class="card"><div class="row2"><h2 style="margin:0">Affluence par créneau horaire</h2><div class="btns"><button type="button" id="hq" class="primary">Par 15 min</button><button type="button" id="hh">Par heure</button></div></div><div class="scroll"><div class="hc" id="hc" role="img" aria-label="Nombre de donneurs par créneau"></div></div><p id="hn" role="status" style="margin:10px 0 0;color:var(--muted)"></p></section>
 <section class="card"><h2>Tableau filière × année</h2><div class="scroll"><table id="mx"></table></div></section>
 
 <section class="card"><h2>Importer les réponses des élèves</h2><p style="margin:0 0 10px;color:var(--muted)">Collez ici les messages reçus (WhatsApp, e-mail…). Tous les messages du formulaire sont reconnus d’un coup, les doublons sont ignorés.</p><textarea class="imp" id="imp" placeholder="Don de sang EMI Khayr&#10;Nom : …&#10;Année : 2ème année&#10;Filière : Informatique" aria-label="Messages à importer"></textarea><div class="btns" style="justify-content:flex-start;align-items:center"><button class="primary" id="impBtn" type="button">Importer</button><span id="impMsg" role="status" style="font-weight:600;color:var(--red)"></span></div></section>
 <section class="card">
 <div class="row2"><h2 style="margin:0">Liste des donneurs</h2><button id="reset" type="button">Tout effacer</button></div>
+<input type="search" id="q" placeholder="Rechercher un nom…" aria-label="Rechercher un donneur par nom" style="width:100%;margin-bottom:6px"><div id="rc" role="status" style="color:var(--muted);min-height:1.3em;margin-bottom:4px"></div>
 <div class="scroll"><table class="list"><tbody id="list"></tbody></table></div>
 </section>
 </div>
@@ -135,10 +143,11 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:linear-grad
 </div></div>
 <script>
 // Collez ici l’adresse du script Google (voir le README). Laissez vide pour un usage local.
-const API_URL="https://script.google.com/macros/s/AKfycbwjO9eBrrD4V7h6QDxzdhXrhluXpYKw9q_jkPDRYGSmvAsagF_lR9hiujfno0CE6EI_/exec";
+const API_URL="";
 const KEY="don-sang-emi-v1";
 const FILS=["Civil","Électrique","Industriel","Informatique","MIS","Mécanique","Minéral","Procédés Industriels"];
 const AN={1:"1ère année",2:"2ème année",3:"3ème année"};
+const SLOTS=(()=>{const a=[];for(let m=540;m<=960;m+=15){a.push(String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0"))}return a})();const hf=s=>s.replace(/^0/,"").replace(":","h");
 let S={donors:[],logo:""};
 try{const r=localStorage.getItem(KEY);if(r){const p=JSON.parse(r);if(p&&Array.isArray(p.donors))S=p}}catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
@@ -157,11 +166,14 @@ let t="<thead><tr><th>Filière</th><th>1ère</th><th>2ème</th><th>3ème</th><th
 FILS.forEach(f=>{t+="<tr><td>"+f+"</td>"+[1,2,3].map(a=>{const n=D.filter(d=>d.fil===f&&d.annee==a).length;return "<td"+(n?"":' class="z"')+">"+n+"</td>"}).join("")+"<td><b>"+D.filter(d=>d.fil===f).length+"</b></td></tr>"});
 t+="</tbody><tfoot><tr><td>Total</td>"+[1,2,3].map(a=>"<td>"+D.filter(d=>d.annee==a).length+"</td>").join("")+"<td>"+D.length+"</td></tr></tfoot>";
 $("mx").innerHTML=t;
-$("list").innerHTML=D.length?D.slice().reverse().map(d=>'<tr><td>'+(d.nom?esc(d.nom):'<span style="color:var(--muted)">Anonyme</span>')+'</td><td>'+AN[d.annee]+'</td><td>'+esc(d.fil)+'</td><td><button class="del" data-id="'+d.id+'" aria-label="Supprimer">×</button></td></tr>').join(""):'<tr><td class="empty" colspan="4">Aucun donneur enregistré pour l’instant.</td></tr>';
+const qv=norm($("q").value),L=D.filter(d=>!qv||norm(d.nom||"").includes(qv));
+$("rc").textContent=qv?L.length+" résultat"+(L.length>1?"s":""):"";
+$("list").innerHTML=L.length?L.slice().reverse().map(d=>'<tr><td>'+(d.nom?esc(d.nom):'<span style="color:var(--muted)">Anonyme</span>')+'</td><td>'+AN[d.annee]+'</td><td>'+esc(d.fil)+'</td><td>'+(d.heure?hf(d.heure):"—")+'</td><td><button class="del" data-id="'+d.id+'" aria-label="Supprimer">×</button></td></tr>').join(""):'<tr><td class="empty" colspan="5">'+(D.length?"Aucun donneur ne correspond à cette recherche.":"Aucun donneur enregistré pour l’instant.")+'</td></tr>';
+drawHours();
 }
 $("f").onsubmit=e=>{
 e.preventDefault();const f=e.target;
-S.donors.push({id:Date.now()+"",nom:f.nom.value.trim(),annee:+f.annee.value,fil:f.fil.value});
+S.donors.push({id:Date.now()+"",nom:f.nom.value.trim(),annee:+f.annee.value,fil:f.fil.value,heure:f.heure.value});
 save();f.reset();render()};
 $("list").onclick=e=>{const id=e.target.dataset.id;if(!id)return;S.donors=S.donors.filter(d=>d.id!==id);save();render()};
 let rt;$("reset").onclick=()=>{const b=$("reset");if(!S.donors.length)return;if(b.dataset.c){S.donors=[];save();render();clearTimeout(rt);b.textContent="Tout effacer";b.classList.remove("danger");delete b.dataset.c;return}b.dataset.c=1;b.textContent="Confirmer l’effacement ?";b.classList.add("danger");rt=setTimeout(()=>{b.textContent="Tout effacer";b.classList.remove("danger");delete b.dataset.c},4000)};
@@ -172,11 +184,12 @@ $("thxX").onclick=closeThx;$("ov").onclick=e=>{if(e.target.id==="ov")closeThx()}
 addEventListener("keydown",e=>{if(e.key==="Escape")closeThx()});
 $("toggle").onclick=()=>{const s=$("stats");s.hidden=!s.hidden;$("toggle").textContent=s.hidden?"Voir les effectifs":"Masquer les effectifs"};
 const norm=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z]/g,"");
-function parseImp(t){const re=/Nom\s*:\s*(.+?)\s*[\r\n]+\s*Ann[ée]e\s*:\s*([123])[^\r\n]*[\r\n]+\s*Fili[èe]re\s*:\s*([^\r\n]+)/gi;let m,add=0,dup=0,bad=0;
+function parseImp(t){const re=/Nom\s*:\s*(.+?)\s*[\r\n]+\s*Ann[ée]e\s*:\s*([123])[^\r\n]*[\r\n]+\s*Fili[èe]re\s*:\s*([^\r\n]+)(?:[\r\n]+\s*Heure\s*:\s*(\d{1,2})[:hH](\d{2}))?/gi;let m,add=0,dup=0,bad=0;
 while((m=re.exec(t))){const nom=m[1].trim().slice(0,60),an=+m[2],fk=norm(m[3]);const fil=FILS.find(x=>norm(x)===fk)||FILS.find(x=>fk&&(norm(x).startsWith(fk)||fk.startsWith(norm(x))));
 if(!fil){bad++;continue}
+const hh=m[4]?m[4].padStart(2,"0")+":"+m[5]:"",heure=SLOTS.includes(hh)?hh:"";
 if(S.donors.some(d=>(d.nom||"").toLowerCase()===nom.toLowerCase()&&d.annee===an&&d.fil===fil)){dup++;continue}
-S.donors.push({id:Date.now()+"-"+Math.random().toString(36).slice(2,7),nom:nom,annee:an,fil:fil});add++}
+S.donors.push({id:Date.now()+"-"+Math.random().toString(36).slice(2,7),nom:nom,annee:an,fil:fil,heure:heure});add++}
 return {add,dup,bad}}
 $("impBtn").onclick=()=>{const r=parseImp($("imp").value);const el=$("impMsg");
 if(!r.add&&!r.dup&&!r.bad){el.textContent="Aucune réponse reconnue dans ce texte.";return}
@@ -191,6 +204,23 @@ if(anim)requestAnimationFrame(()=>requestAnimationFrame(()=>{document.querySelec
 $("simBtn").onclick=()=>{const s=$("sim");s.hidden=!s.hidden;$("simBtn").textContent=s.hidden?"Simulation":"Masquer la simulation";if(!s.hidden)simDraw(true)};
 $("goal").onchange=()=>{S.goal=Math.max(1,Math.min(999,Math.round(+$("goal").value)||50));save();simDraw(false)};
 const _r=render;render=function(){_r();if(!$("sim").hidden)simDraw(false)};
+let hmode=0;
+function drawHours(){
+const D=S.donors,cnt={};SLOTS.forEach(x=>{cnt[x]=0});let none=0;
+D.forEach(d=>{if(d.heure&&cnt[d.heure]!==undefined)cnt[d.heure]++;else none++});
+let items;
+if(hmode===0){items=SLOTS.map(x=>({n:cnt[x],l:/:00$/.test(x)?(+x.slice(0,2))+"h":"",t:hf(x)}))}
+else{const g={};SLOTS.forEach(x=>{const h=x.slice(0,2);g[h]=(g[h]||0)+cnt[x]});
+items=Object.keys(g).map(h=>({n:g[h],l:(+h)+"h",t:h==="16"?"16h00":(+h)+"h à "+(+h+1)+"h"}))}
+const mx=Math.max(1,...items.map(i=>i.n));
+$("hc").style.minWidth=hmode===0?"600px":"0";
+$("hc").innerHTML=items.map(i=>'<div class="hb" title="'+i.t+' : '+i.n+' donneur(s)"><em>'+(i.n||"")+'</em><i style="height:'+(i.n?Math.max(6,i.n/mx*150):0)+'px"></i><small>'+i.l+'</small></div>').join("");
+const top=items.filter(i=>mx>0&&i.n===mx&&i.n>0);
+$("hn").textContent=(top.length?"Créneau le plus chargé : "+top.map(i=>i.t).join(", ")+" ("+mx+" donneur"+(mx>1?"s":"")+")":"Aucun créneau choisi pour l’instant.")+(none?" · "+none+" donneur(s) sans créneau":"")}
+$("hq").onclick=()=>{hmode=0;$("hq").classList.add("primary");$("hh").classList.remove("primary");drawHours()};
+$("hh").onclick=()=>{hmode=1;$("hh").classList.add("primary");$("hq").classList.remove("primary");drawHours()};
+$("q").oninput=()=>render();
+$("f").heure.innerHTML+=SLOTS.map(x=>'<option value="'+x+'">'+hf(x)+"</option>").join("");
 logo();render();
 (function(){
 if(!API_URL)return;
@@ -208,7 +238,7 @@ const u=new URL(API_URL);u.searchParams.set("action",action);u.searchParams.set(
 Object.keys(p||{}).forEach(k=>u.searchParams.set(k,p[k]));
 const r=await fetch(u.toString()),j=await r.json();
 if(j.error){gate(true,"Code incorrect.");throw new Error("auth")}
-S.donors=j.donors.map(d=>({id:String(d.id),nom:String(d.nom||"").trim(),annee:+d.annee,fil:String(d.fil)}));
+S.donors=j.donors.map(d=>({id:String(d.id),nom:String(d.nom||"").trim(),annee:+d.annee,fil:String(d.fil),heure:String(d.heure||"")}));
 render();st("Données à jour à "+new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}));return j}
 async function load(){try{await call("list")}catch(e){if(e.message!=="auth")st("Connexion impossible. Appuyez sur Actualiser.")}}
 async function enter(){key=$("gk").value.trim();if(!key)return;$("ge").textContent="Vérification…";
@@ -216,7 +246,7 @@ try{await call("list");try{sessionStorage.setItem("ak",key)}catch(e){}gate(false
 $("gb").onclick=enter;$("gk").addEventListener("keydown",e=>{if(e.key==="Enter")enter()});
 $("rf").onclick=load;
 $("f").onsubmit=async e=>{e.preventDefault();const f=e.target;if(!f.annee.value||!f.fil.value)return;
-try{await call("add",{nom:f.nom.value.trim(),annee:f.annee.value,fil:f.fil.value});f.reset()}catch(err){st("Ajout impossible.")}};
+try{await call("add",{nom:f.nom.value.trim(),annee:f.annee.value,fil:f.fil.value,heure:f.heure.value});f.reset()}catch(err){st("Ajout impossible.")}};
 $("list").onclick=async e=>{const id=e.target.dataset.id;if(!id)return;try{await call("delete",{id:id})}catch(err){st("Suppression impossible.")}};
 let rt2;$("reset").onclick=async()=>{const b=$("reset");if(!S.donors.length)return;
 if(b.dataset.c){clearTimeout(rt2);b.textContent="Tout effacer";b.classList.remove("danger");delete b.dataset.c;try{await call("clear")}catch(err){st("Effacement impossible.")}return}
